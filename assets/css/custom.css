@@ -323,3 +323,4 @@ figcaption { color: var(--text-muted); font-size: .8rem; line-height: 1.5; margi
 /* Official wordmarks retain their contrast in either page theme. */
 .entry-logo--dark { background: #10141c; padding: 6px; border: 1px solid #59616d; }
 .entry-logo--light { background: #ffffff; padding: 5px; border: 1px solid #c4c8ce; }
+.entry-logo--plain { padding: 10px; border-color: transparent; }

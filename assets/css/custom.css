@@ -268,14 +268,19 @@ figcaption { color: var(--text-muted); font-size: .8rem; line-height: 1.5; margi
 	right: max(0.65rem, env(safe-area-inset-right));
 	z-index: 2;
 	width: 2.75rem;
+	min-width: 2.75rem;
 	height: 2.75rem;
 	margin: 0;
 	padding: 0;
-	border: 1px solid rgba(255, 255, 255, 0.35);
+	border: 2px solid #ffffff;
 	border-radius: 999px;
-	background: rgba(0, 0, 0, 0.45);
+	background-color: #111111;
 	color: #ffffff;
-	font-size: 1.75rem;
+	box-shadow:
+		0 0 0 1px rgba(0, 0, 0, 0.9),
+		0 2px 14px rgba(0, 0, 0, 0.55);
+	font-size: 1.65rem;
+	font-weight: 600;
 	line-height: 1;
 	cursor: pointer;
 	display: flex;
@@ -285,9 +290,15 @@ figcaption { color: var(--text-muted); font-size: .8rem; line-height: 1.5; margi
 
 .photo-zoom-close:hover,
 .photo-zoom-close:focus-visible {
-	background: rgba(255, 255, 255, 0.15);
-	outline: 2px solid rgba(255, 255, 255, 0.6);
-	outline-offset: 2px;
+	background-color: #2a2a2a;
+	border-color: #ffffff;
+	color: #ffffff;
+	outline: 2px solid #ffffff;
+	outline-offset: 3px;
+}
+
+.photo-zoom-close:active {
+	background-color: #3a3a3a;
 }
 
 .photo-zoom-viewport {

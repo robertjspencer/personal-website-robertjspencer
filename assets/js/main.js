@@ -142,82 +142,77 @@
 						},
 					});
 
-			// Links.
-				var $nav_a = $nav.find('a');
+			// Links and scroll-spy.
+				var $nav_a = $nav.find('a'),
+					navSections = [],
+					lockTimer = null;
 
-				$nav_a
-					.scrolly({
-						speed: 1000,
-						offset: function() { return $nav.height(); }
-					})
-					.on('click', function() {
+				$nav_a.each(function() {
+					var $link = $(this),
+						id = $link.attr('href');
 
-						var $this = $(this);
+					if (!id || id.charAt(0) !== '#')
+						return;
 
-						closeNavMenu();
+					var $section = $(id);
 
-						// External link? Bail.
-							if ($this.attr('href').charAt(0) != '#')
-								return;
+					if ($section.length > 0)
+						navSections.push({ $link: $link, $section: $section });
+				});
 
-						// Deactivate all links.
-							$nav_a
-								.removeClass('active')
-								.removeClass('active-locked');
+				function updateActiveNav() {
+					if ($nav_a.filter('.active-locked').length > 0)
+						return;
 
-						// Activate link *and* lock it (so Scrollex doesn't try to activate other links as we're scrolling to this one's section).
-							$this
-								.addClass('active')
-								.addClass('active-locked');
+					var scrollTop = $window.scrollTop(),
+						viewportHeight = window.innerHeight || $window.height(),
+						docHeight = document.documentElement.scrollHeight,
+						navHeight = $nav.outerHeight() || 60;
 
-					})
-					.each(function() {
+					if (scrollTop > 0 && scrollTop + viewportHeight >= docHeight - 32 && navSections.length > 0) {
+						$nav_a.removeClass('active');
+						navSections[navSections.length - 1].$link.addClass('active');
+						return;
+					}
 
-						var	$this = $(this),
-							id = $this.attr('href'),
-							$section = $(id);
+					var threshold = scrollTop + navHeight + Math.min(160, viewportHeight * 0.25),
+						activeLink = null;
 
-						// No section for this link? Bail.
-							if ($section.length < 1)
-								return;
+					for (var i = 0; i < navSections.length; i++) {
+						if (navSections[i].$section.offset().top <= threshold)
+							activeLink = navSections[i].$link;
+					}
 
-						// Scrollex.
-							$section.scrollex({
-								mode: 'middle',
-								initialize: function() {
+					$nav_a.removeClass('active');
 
-									// Deactivate section.
-										if (browser.canUse('transition'))
-											$section.addClass('inactive');
+					if (activeLink)
+						activeLink.addClass('active');
+				}
 
-								},
-								enter: function() {
+				$nav_a.on('click', function() {
+					var $this = $(this),
+						href = $this.attr('href');
 
-									// Activate section.
-										$section.removeClass('inactive');
+					closeNavMenu();
 
-									// No locked links? Deactivate all links and activate this section's one.
-										if ($nav_a.filter('.active-locked').length == 0) {
+					if (!href || href.charAt(0) !== '#')
+						return;
 
-											$nav_a.removeClass('active');
-											$this.addClass('active');
+					$nav_a.removeClass('active active-locked');
+					$this.addClass('active active-locked');
 
-										}
+					if (lockTimer)
+						window.clearTimeout(lockTimer);
 
-									// Otherwise, if this section's link is the one that's locked, unlock it.
-										else if ($this.hasClass('active-locked'))
-											$this.removeClass('active-locked');
+					lockTimer = window.setTimeout(function() {
+						$this.removeClass('active-locked');
+						lockTimer = null;
+					}, 900);
+				});
 
-								}
-							});
-
-					});
+				$window.on('scroll resize load', updateActiveNav);
+				updateActiveNav();
 
 		}
-
-	// Scrolly.
-		$('.scrolly').scrolly({
-			speed: 1000
-		});
 
 })(jQuery);

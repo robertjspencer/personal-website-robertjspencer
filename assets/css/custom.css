@@ -111,7 +111,7 @@ a:focus-visible, button:focus-visible, summary:focus-visible, .photo-zoomable:fo
 #header.alt .hero-summary { font-size: 1rem; line-height: 1.6; color: var(--text-muted); margin: 0 0 .65rem; }
 #header.alt .hero-specialisms { font-size: .9rem; margin: 0 0 1.5rem; color: var(--text-muted); }
 .hero-portrait { overflow: hidden; border-radius: 1.1rem; }
-.hero-portrait img { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; object-position: 75% bottom; }
+.hero-portrait img { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; object-position: 75% bottom; }
 .hero-actions, .contact-actions { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: .7rem; margin: 0; }
 .hero-actions li { padding: 0; }
 .button { display: inline-flex; align-items: center; justify-content: center; height: auto; min-height: 44px; min-width: 0; border-radius: 999px; padding: 0 1.25rem; font-size: .9rem; line-height: 1.2; text-decoration: none; }

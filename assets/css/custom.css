@@ -47,6 +47,7 @@ h1, h2, h3, strong, #main h1, #main h2, #main h3, #main strong { color: var(--te
 p { margin: 0 0 1.1rem; }
 a { color: inherit; border-bottom: 0; text-decoration: underline; text-decoration-color: var(--text-muted); text-underline-offset: .2em; transition: color .15s ease, text-decoration-color .15s ease; }
 a:hover { color: var(--text-strong); text-decoration-color: var(--text-strong); }
+#main a:hover, #nav a:hover { color: var(--text-strong); }
 a:focus-visible, button:focus-visible, summary:focus-visible, .photo-zoomable:focus-visible { outline: 2px solid var(--text-strong); outline-offset: 5px; }
 #wrapper { width: min(1120px, calc(100% - 4rem)); max-width: none; margin: 0 auto; }
 .eyebrow { font-size: .75rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); }

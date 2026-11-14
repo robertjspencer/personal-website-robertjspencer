@@ -1,8 +1,7 @@
 (function($) {
 
 	var	$window = $(window),
-		$body = $('body'),
-		$main = $('#main');
+		$body = $('body');
 
 	var themeStorageKey = 'preferred-theme',
 		root = document.documentElement,
@@ -35,8 +34,7 @@
 		root.style.colorScheme = theme;
 
 		if ($themeToggle.length > 0) {
-			$themeToggle.attr('aria-pressed', theme === 'dark' ? 'true' : 'false');
-			$themeToggle.attr('title', nextLabel);
+			$themeToggle.attr('title', 'Switch to ' + nextLabel.toLowerCase());
 			$themeToggle.find('.theme-toggle-label').text(nextLabel);
 		}
 	}
@@ -89,7 +87,8 @@
 
 		if ($nav.length > 0) {
 
-			var $navToggle = $('#nav-toggle');
+			var $navToggle = $('#nav-toggle'),
+				heroHeading = document.getElementById('hero-heading');
 
 			function closeNavMenu() {
 				$nav.removeClass('is-open');
@@ -117,7 +116,7 @@
 				});
 
 				if (window.matchMedia) {
-					var desktopNavQuery = window.matchMedia('(min-width: 737px)'),
+					var desktopNavQuery = window.matchMedia('(min-width: 861px)'),
 						handleDesktopNavChange = function(event) {
 							if (event.matches)
 								closeNavMenu();
@@ -130,20 +129,9 @@
 				}
 			}
 
-			// Shrink effect.
-				$main
-					.scrollex({
-						mode: 'top',
-						enter: function() {
-							$nav.addClass('alt');
-						},
-						leave: function() {
-							$nav.removeClass('alt');
-						},
-					});
-
 			// Links and scroll-spy.
-				var $nav_a = $nav.find('a'),
+				var $nav_a = $nav.find('.nav-links a'),
+					$navName = $nav.find('.nav-name'),
 					navSections = [],
 					lockTimer = null;
 
@@ -160,14 +148,29 @@
 						navSections.push({ $link: $link, $section: $section });
 				});
 
+				function updateNavScrollState() {
+					var navHeight = $nav.outerHeight() || 56,
+						scrolledPastHero = false;
+
+					if (heroHeading) {
+						scrolledPastHero = heroHeading.getBoundingClientRect().bottom <= navHeight + 8;
+					} else {
+						scrolledPastHero = $window.scrollTop() > 120;
+					}
+
+					$nav.toggleClass('is-scrolled', scrolledPastHero);
+				}
+
 				function updateActiveNav() {
+					updateNavScrollState();
+
 					if ($nav_a.filter('.active-locked').length > 0)
 						return;
 
 					var scrollTop = $window.scrollTop(),
 						viewportHeight = window.innerHeight || $window.height(),
 						docHeight = document.documentElement.scrollHeight,
-						navHeight = $nav.outerHeight() || 60;
+						navHeight = $nav.outerHeight() || 56;
 
 					if (scrollTop > 0 && scrollTop + viewportHeight >= docHeight - 32 && navSections.length > 0) {
 						$nav_a.removeClass('active');
@@ -188,6 +191,11 @@
 					if (activeLink)
 						activeLink.addClass('active');
 				}
+
+				$navName.on('click', function() {
+					closeNavMenu();
+					$nav_a.removeClass('active active-locked');
+				});
 
 				$nav_a.on('click', function() {
 					var $this = $(this),

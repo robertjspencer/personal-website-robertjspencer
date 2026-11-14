@@ -9,6 +9,7 @@
 	var imgEl = modal.querySelector('.photo-zoom-img');
 	var closeBtn = modal.querySelector('.photo-zoom-close');
 	var wrapper = document.getElementById('wrapper');
+	var navEl = document.getElementById('nav');
 	var lastTrigger = null;
 
 	var zoomables = document.querySelectorAll('img.photo-zoomable');
@@ -61,6 +62,9 @@
 		if (wrapper && 'inert' in HTMLElement.prototype) {
 			wrapper.inert = true;
 		}
+		if (navEl && 'inert' in HTMLElement.prototype) {
+			navEl.inert = true;
+		}
 		closeBtn.focus();
 	}
 
@@ -72,6 +76,9 @@
 		dragging = false;
 		if (wrapper && 'inert' in HTMLElement.prototype) {
 			wrapper.inert = false;
+		}
+		if (navEl && 'inert' in HTMLElement.prototype) {
+			navEl.inert = false;
 		}
 		resetTransform();
 		if (lastTrigger && typeof lastTrigger.focus === 'function') {
